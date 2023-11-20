@@ -8,7 +8,6 @@ export const useQueryBreeds = () => {
     error,
     isLoading,
     isError,
-    isFetching,
   } = useQuery({
     queryKey: ['breeds'],
     queryFn: CatsAPI.getAllBreeds,
@@ -18,9 +17,8 @@ export const useQueryBreeds = () => {
 
   return {
     breeds,
-    error,
     isLoading,
+    error,
     isError,
-    isFetching,
   };
 };

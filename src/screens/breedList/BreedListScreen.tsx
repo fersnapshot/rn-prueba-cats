@@ -1,4 +1,5 @@
 import React from 'react';
+import { ActivityIndicator, StyleSheet } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 
 import { BreedListProps } from '#models';
@@ -7,10 +8,14 @@ import { Label } from '#components';
 import { BreedCard } from './components/BreedCard';
 
 export const BreedListScreen = ({ navigation }: BreedListProps) => {
-  const { breeds, error, isLoading, isError, isFetching } = useQueryBreeds();
+  const { breeds, isLoading, error, isError } = useQueryBreeds();
+
+  const handleSelect = (breedId: string) => () => {
+    navigation.navigate('BreedPhotoList', { breedId });
+  };
 
   if (isLoading) {
-    return <Label type="notification">Cargando...</Label>;
+    return <ActivityIndicator size="large" style={styles.loading} />;
   }
   if (isError && error != null) {
     return <Label type="notification">Error: {error.message}</Label>;
@@ -20,9 +25,17 @@ export const BreedListScreen = ({ navigation }: BreedListProps) => {
     <FlashList
       keyExtractor={item => item.id}
       data={breeds}
-      renderItem={({ item }) => <BreedCard breed={item} />}
+      renderItem={({ item }) => (
+        <BreedCard breed={item} onSelect={handleSelect(item.id)} />
+      )}
       estimatedItemSize={200}
       horizontal
     />
   );
 };
+
+const styles = StyleSheet.create({
+  loading: {
+    marginTop: 24,
+  },
+});

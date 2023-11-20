@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image, StyleSheet, ScrollView } from 'react-native';
+import { Image, StyleSheet, ScrollView, Pressable, View } from 'react-native';
 
 import { Breed } from '#models';
 import { Label } from '#components';
@@ -7,10 +7,14 @@ import { COLORS } from '#config/design';
 
 interface Props {
   breed: Breed;
+  onSelect: () => void;
 }
-export const BreedCard = ({ breed }: Props) => {
+export const BreedCard = ({ breed, onSelect }: Props) => {
   return (
-    <View style={styles.breed}>
+    <Pressable
+      style={({ pressed }) => [styles.breed, { opacity: pressed ? 0.2 : 1 }]}
+      onPress={onSelect}
+    >
       <Image source={{ uri: breed.image.url }} style={styles.image} />
       <Label type="title" style={styles.marginTop}>
         {breed.name}
@@ -22,9 +26,11 @@ export const BreedCard = ({ breed }: Props) => {
         style={styles.descriptionScroll}
         contentContainerStyle={styles.descriptionContainerScroll}
       >
-        <Label>{breed.description}</Label>
+        <View onStartShouldSetResponder={() => true}>
+          <Label>{breed.description}</Label>
+        </View>
       </ScrollView>
-    </View>
+    </Pressable>
   );
 };
 const styles = StyleSheet.create({
