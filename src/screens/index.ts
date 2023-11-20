@@ -1,2 +1,2 @@
-export * from './catList/CatListScreen';
-export * from './catPhotoList/CatPhotoListScreen';
+export * from './breedList/BreedListScreen';
+export * from './breedPhotoList/BreedPhotoListScreen';

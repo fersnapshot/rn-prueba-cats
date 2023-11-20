@@ -1,10 +1,10 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 
-export const CatPhotoListScreen = () => {
+export const BreedPhotoListScreen = () => {
   return (
     <View>
-      <Text>CatPhotoListScreen</Text>
+      <Text>BreedPhotoListScreen</Text>
     </View>
   );
 };
