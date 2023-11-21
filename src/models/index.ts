@@ -4,7 +4,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 export type RootStackParamList = {
   BreedList: undefined;
-  BreedPhotoList: { breedId: string };
+  BreedPhotoList: { breedId: string; name: string };
 };
 
 export type BreedListProps = NativeStackScreenProps<
@@ -75,4 +75,32 @@ export interface ImageBreed {
 interface Weight {
   imperial: string;
   metric: string;
+}
+
+export interface Vote {
+  id: number;
+  image_id: string;
+  value: number;
+}
+
+export interface VoteOriginal {
+  id: number;
+  image_id: string;
+  value: number;
+  sub_id: string;
+  created_at: Date;
+  country_code: string;
+  image: {
+    id: string;
+    url: string;
+  };
+}
+
+export interface VoteResponse {
+  message: string;
+  id: number;
+  image_id: string;
+  sub_id: string;
+  value: number;
+  country_code: string;
 }

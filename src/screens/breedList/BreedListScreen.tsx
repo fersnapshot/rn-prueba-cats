@@ -2,7 +2,7 @@ import React from 'react';
 import { ActivityIndicator, StyleSheet } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 
-import { BreedListProps } from '#models';
+import { Breed, BreedListProps } from '#models';
 import { useQueryBreeds } from '#hooks';
 import { Label } from '#components';
 import { BreedCard } from './components/BreedCard';
@@ -10,8 +10,11 @@ import { BreedCard } from './components/BreedCard';
 export const BreedListScreen = ({ navigation }: BreedListProps) => {
   const { breeds, isLoading, error, isError } = useQueryBreeds();
 
-  const handleSelect = (breedId: string) => () => {
-    navigation.navigate('BreedPhotoList', { breedId });
+  const handleSelect = (breed: Breed) => () => {
+    navigation.navigate('BreedPhotoList', {
+      breedId: breed.id,
+      name: breed.name,
+    });
   };
 
   if (isLoading) {
@@ -26,7 +29,7 @@ export const BreedListScreen = ({ navigation }: BreedListProps) => {
       keyExtractor={item => item.id}
       data={breeds}
       renderItem={({ item }) => (
-        <BreedCard breed={item} onSelect={handleSelect(item.id)} />
+        <BreedCard breed={item} onSelect={handleSelect(item)} />
       )}
       estimatedItemSize={200}
       horizontal

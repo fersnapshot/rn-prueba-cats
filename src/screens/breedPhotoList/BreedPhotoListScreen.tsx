@@ -1,17 +1,35 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import { BreedPhotoListProps } from '#models';
-import { useQueryImagesBreed } from '#hooks';
+import { useQueryImagesBreed, useQueryPostVote, useQueryVotes } from '#hooks';
 import { Label } from '#components';
 import { ImageCard } from './components/ImageCard';
 
-export const BreedPhotoListScreen = ({ route }: BreedPhotoListProps) => {
-  const { breedId } = route.params;
+export const BreedPhotoListScreen = ({
+  navigation,
+  route,
+}: BreedPhotoListProps) => {
+  const { breedId, name } = route.params;
+
+  useEffect(() => {
+    navigation.setOptions({
+      title: name,
+    });
+  }, [name, navigation]);
+
   const { images, isLoading, isFetching, error, isError, fetchNextPage } =
     useQueryImagesBreed(breedId);
+
+  const { votes, votesIsLoading } = useQueryVotes();
+
+  const voteMutation = useQueryPostVote();
+
+  const handleVote = (imageId: string) => (value: number) => {
+    console.log('handleVote', imageId, value);
+    voteMutation.mutate({ imageId, value });
+  };
 
   const renderFooter = () => (
     <>{isFetching ? <ActivityIndicator size="small" /> : null}</>
@@ -21,8 +39,9 @@ export const BreedPhotoListScreen = ({ route }: BreedPhotoListProps) => {
     'images.id',
     images.map(im => im.id),
   );
+  console.log('VOTOS', votes);
 
-  if (isLoading) {
+  if (isLoading || votesIsLoading) {
     return <ActivityIndicator size="large" style={styles.loading} />;
   }
   if (isError && error != null) {
@@ -30,33 +49,45 @@ export const BreedPhotoListScreen = ({ route }: BreedPhotoListProps) => {
   }
   return (
     <>
-      <View style={{ flexDirection: 'row' }}>
-        <Icon name="thumb-up" size={36} color="yellow" />
-        <Icon name="thumb-up" size={36} />
-
-        <Icon name="thumb-down" size={36} />
-        <Icon name="thumb-down-alt" size={36} />
-        <Icon name="thumb-down-off-alt" size={36} />
-        <Icon name="thumb-up" size={36} />
-        <Icon name="thumb-up-alt" size={36} />
-        <Icon name="thumb-up-off-alt" size={36} />
-        <Icon name="thumbs-up-down" size={36} />
-      </View>
       <FlashList
         keyExtractor={(item, index) => `${index}-${item.id}`}
         data={images}
-        renderItem={({ item }) => <ImageCard url={item.url} />}
+        renderItem={({ item }) => (
+          <ImageCard
+            url={item.url}
+            vote={votes.find(v => v.image_id === item.id)?.value}
+            onVote={handleVote(item.id)}
+          />
+        )}
         estimatedItemSize={100}
         onEndReachedThreshold={0.2}
         onEndReached={fetchNextPage}
         ListFooterComponent={renderFooter}
       />
+      {voteMutation.isPending && <Loading />}
     </>
   );
 };
 
+const Loading = () => (
+  <View style={styles.modal}>
+    <ActivityIndicator size="large" />
+  </View>
+);
+
 const styles = StyleSheet.create({
   loading: {
     marginTop: 24,
+  },
+  modal: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 10,
+    backgroundColor: 'rgba(256,256,256,0.6)',
   },
 });

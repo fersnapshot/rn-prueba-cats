@@ -24,7 +24,7 @@ export const Navigation = () => {
         <Stack.Screen
           name="BreedPhotoList"
           component={BreedPhotoListScreen}
-          options={{ title: 'Fotos' }}
+          options={{ title: '' }}
         />
       </Stack.Navigator>
     </NavigationContainer>

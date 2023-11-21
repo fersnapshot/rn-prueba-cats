@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 import { Breed, ImageBreed } from '#models';
+import { consoleTime, sleep } from '#helpers';
 
 interface ImagesBreedProps {
   breedId: string;
@@ -8,12 +9,9 @@ interface ImagesBreedProps {
   limit: number;
 }
 
-// TODO: pruebas
-const sleep = (seconds: number) =>
-  new Promise(resolve => setTimeout(resolve, seconds * 1000));
-
 export const CatsAPI = {
   getAllBreeds: async (): Promise<Breed[]> => {
+    consoleTime('getAllBreeds');
     await sleep(2);
 
     const { data } = await axios.get<Breed[]>('/breeds');
@@ -25,7 +23,7 @@ export const CatsAPI = {
     page,
     limit,
   }: ImagesBreedProps): Promise<ImageBreed[]> => {
-    console.log('getAllImagesBreed', breedId, page, limit);
+    consoleTime('getAllImagesBreed', breedId, page, limit);
     await sleep(2);
 
     const { data } = await axios.get<ImageBreed[]>(
