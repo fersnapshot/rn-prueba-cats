@@ -5,6 +5,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 export type RootStackParamList = {
   BreedList: undefined;
   BreedPhotoList: { breedId: string; name: string };
+  About: undefined;
 };
 
 export type BreedListProps = NativeStackScreenProps<

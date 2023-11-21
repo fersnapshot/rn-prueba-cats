@@ -6,4 +6,8 @@ export const COLORS = {
   border: '#DCDCDC',
 
   white: '#fff',
+
+  primary: '#304FFE',
+  primaryDark: '#3F51B5',
+  secondary: '#ff0266',
 };

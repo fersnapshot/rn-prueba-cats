@@ -27,7 +27,6 @@ export const BreedPhotoListScreen = ({
   const voteMutation = useQueryPostVote();
 
   const handleVote = (imageId: string) => (value: number) => {
-    console.log('handleVote', imageId, value);
     voteMutation.mutate({ imageId, value });
   };
 
@@ -35,11 +34,11 @@ export const BreedPhotoListScreen = ({
     <>{isFetching ? <ActivityIndicator size="small" /> : null}</>
   );
 
-  console.log(
-    'images.id',
-    images.map(im => im.id),
-  );
-  console.log('VOTOS', votes);
+  // console.log(
+  //   'images.id',
+  //   images.map(im => im.id),
+  // );
+  // console.log('VOTOS', votes);
 
   if (isLoading || votesIsLoading) {
     return <ActivityIndicator size="large" style={styles.loading} />;

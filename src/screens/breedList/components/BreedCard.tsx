@@ -49,10 +49,6 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
   },
-  nameContainer: {
-    flexDirection: 'column',
-    marginLeft: 16,
-  },
   marginTop: {
     marginTop: 8,
   },

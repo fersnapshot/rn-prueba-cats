@@ -2,6 +2,7 @@ import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 
 import { ButtonIcon } from '#components';
+import { COLORS } from '#config/design';
 
 interface Props {
   url: string;
@@ -26,12 +27,12 @@ export const ImageCard = ({ url, vote = 0, onVote }: Props) => {
         <ButtonIcon
           icon={vote > 0 ? 'thumb-up-alt' : 'thumb-up-off-alt'}
           onPress={handleVote(1)}
-          color="#0336ff"
+          color={COLORS.primary}
         />
         <ButtonIcon
           icon={vote < 0 ? 'thumb-down-alt' : 'thumb-down-off-alt'}
           onPress={handleVote(-1)}
-          color="#ff0266"
+          color={COLORS.secondary}
         />
       </View>
     </View>
